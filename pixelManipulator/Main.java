@@ -14,22 +14,21 @@ public class Main {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		
 		int imageWidth = image.getWidth();
 		int imageHeight = image.getHeight();
 		int imageRGB = 0, red = 0, green =0, blue = 0;
-		imageRGB = image.getRGB(399, 399);
-		red = (imageRGB & 0x00ff0000) >> 16;
-		green = (imageRGB & 0x00000ff00) >> 8;
-		blue = imageRGB & 0x000000ff;
-		System.out.println(red + " " + green + " " + blue);
-		System.out.println(imageWidth);
-		System.out.println(imageHeight);
-		//400x400
+		int[] redArray = new int[imageWidth];
+		int[] greenArray = new int[imageWidth];
+		int[] blueArray = new int[imageWidth];
 			for(int x = 0; x<imageWidth; x++) {	
 				imageRGB = image.getRGB(x, x);
 				red = (imageRGB & 0x00ff0000) >> 16;
+				redArray[x] = red;
 				green = (imageRGB & 0x00000ff00) >> 8;
+				greenArray[x] = green;
 				blue = imageRGB & 0x000000ff;
+				blueArray[x] = blue;
 				System.out.println(x + " " + x);
 				System.out.println("Red is " + red);
 				System.out.println("Green is " + green);
