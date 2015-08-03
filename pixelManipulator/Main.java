@@ -15,34 +15,36 @@ public class Main {
 		File outputFile = null;
 		try {
 			image = ImageIO.read(new File("robot.jpg"));
-			outputFile = new File("saved.png");
+			outputFile = new File("saved.jpg");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		
 		int imageWidth = image.getWidth();
 		int imageHeight = image.getHeight();
-		int imageRGB = 0, red = 0, green =0, blue = 0;
-//		int[] redArray = new int[imageWidth];
-//		int[] greenArray = new int[imageWidth];
-//		int[] blueArray = new int[imageWidth];
-//			for(int x = 0; x<imageWidth; x++) {	
-//				imageRGB = image.getRGB(x, x);
-//				red = (imageRGB & 0x00ff0000) >> 16;
-//				redArray[x] = red;
-//				green = (imageRGB & 0x00000ff00) >> 8;
-//				greenArray[x] = green;
-//				blue = imageRGB & 0x000000ff;
-//				blueArray[x] = blue;
-////				System.out.println(x + " " + x);
-////				System.out.println("Red is " + red);
-////				System.out.println("Green is " + green);
-////				System.out.println("Blue is " + blue);
-//			}
+		Color[] color = new Color[imageWidth];
 		Random rand = new Random();
-	
-		int pixelOne, pixelTwo, pixelThree;
-		for(int i = 0; i<10000; i++) {	
+		int[] redArray = new int[imageWidth];
+		int[] greenArray = new int[imageWidth];
+		int[] blueArray = new int[imageWidth];
+		int[] rgb = new int[imageWidth];
+		int red, green, blue;
+		for(int i = 0; i<imageHeight; i++) {
+			for(int x = 0; x<imageHeight; x++) {
+				int tempPixel = image.getRGB(i, i);
+				red = (tempPixel & 0x00ff0000) >> 16;
+				green = (tempPixel & 0x00000ff00) >> 8;
+				blue = tempPixel & 0x000000ff;
+				redArray[i] = red;
+				greenArray[i] = green;
+				blueArray[i] = blue;
+				color[i] = new Color(redArray[i], greenArray[i], blueArray[i]);
+				rgb[i] = new Color(redArray[i], greenArray[i], blueArray[i]).getRGB();
+			}
+		}
+		
+		int pixelOne, pixelTwo;
+		for(int i = 0; i<2000000; i++) {	
 			int randomX1 = rand.nextInt(imageWidth);
 			int randomY1 = rand.nextInt(imageWidth);
 			int randomX2 = rand.nextInt(imageWidth);
@@ -57,17 +59,19 @@ public class Main {
 			int pixelTwoRed = (pixelTwo & 0x00ff0000) >> 16;
 			int pixelTwoGreen = (pixelTwo & 0x00000ff00) >> 8;
 			int pixelTwoBlue = pixelTwo & 0x000000ff;
-			
-			int rgb = new Color(pixelOneRed, pixelOneGreen, pixelOneBlue).getRGB();
-			int rgb2 = new Color(pixelTwoRed, pixelTwoGreen, pixelTwoBlue).getRGB();
-			image.setRGB(randomX2, randomY2, rgb);
-			image.setRGB(randomX1, randomY1, rgb2);
 
-		}	
+			int rgb1 = new Color(pixelOneRed, pixelOneGreen, pixelOneBlue).getRGB();
+			int rgb2 = new Color(pixelTwoRed, pixelTwoGreen, pixelTwoBlue).getRGB();
+			
+			image.setRGB(randomX1, randomY1, rgb2);
+			image.setRGB(randomX2, randomY1, rgb1);
+		}
+		
 		try {
 				ImageIO.write(image, "jpeg", outputFile);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
+		PixelCreator pc = new PixelCreator();
 	}
 }
